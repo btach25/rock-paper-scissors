@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors</title>
+</head>
+<body>
+    <h1>Rock Paper Scissors</h1>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <div id="results"></div>
+    <div id="finalResult"></div>
+</body>
+<script>
+    let round = 1;
+    let humanScore = 0;
+    let computerScore = 0;
+
+    function getComputerChoice() {
+        const choices = ["rock", "paper", "scissors"];
+        const randomIndex = Math.floor(Math.random() * choices.length);
+        return choices[randomIndex];
+    }
+
+    function playRound(humanChoice, computerChoice) {
+        let resultMessage;
+        if (humanChoice === computerChoice) {
+            resultMessage = "It's a tie!";
+        } else if (
+            (humanChoice === "rock" && computerChoice === "scissors") ||
+            (humanChoice === "scissors" && computerChoice === "paper") ||
+            (humanChoice === "paper" && computerChoice === "rock")
+        ) {
+            humanScore++;
+            resultMessage = `You win! ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)} beats ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}`;
+        } else {
+            computerScore++;
+            resultMessage = `You lose! ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} beats ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)}`;
+        }
+        return resultMessage;
+    }
+
+    function playGame(humanChoice) {
+        if (round <= 3) {
+            const computerChoice = getComputerChoice();
+            const resultMessage = playRound(humanChoice, computerChoice);
+            document.getElementById("results").innerHTML += `<p>Round ${round}: You chose ${humanChoice}, Computer chose ${computerChoice}. ${resultMessage}</p>`;
+            round++;
+            
+            if (round > 3) {
+                let finalResult;
+                if (humanScore > computerScore) {
+                    finalResult = "You've won the game!";
+                } else if (computerScore > humanScore) {
+                    finalResult = "Computer won the game!";
+                } else {
+                    finalResult = "The game is a tie!";
+                }
+                document.getElementById("finalResult").innerText = `Final Scores - Human: ${humanScore}, Computer: ${computerScore}. ${finalResult}`;
+            }
+        }
+    }
+
+    document.getElementById("rock").addEventListener("click", function() {
+        playGame("rock");
+    });
+
+    document.getElementById("paper").addEventListener("click", function() {
+        playGame("paper");
+    });
+
+    document.getElementById("scissors").addEventListener("click", function() {
+        playGame("scissors");
+    });
+</script>
+</html>
